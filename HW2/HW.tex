@@ -1,0 +1,94 @@
+% !TEX program = xelatex
+\documentclass[]{article}
+\usepackage{commons/course}
+
+\begin{document}
+\printheader
+
+در این سوال می‌خواهیم که
+\lr{FSM}
+معرفی شده در کلاس را به کمک زبان پایتون شبیه سازی کنیم.
+قسمت
+\lr{super state}
+آن در زیر آمده است.
+\begin{latin}
+    \centering
+    \begin{tikzpicture}[->, >=stealth', auto, semithick, node distance=5cm]
+    \tikzstyle{every state}=[fill=white,draw=black,thick,text=black,scale=1]
+    \node[align=center,initial above,state,initial text=] (0)  {Heater Off\\Cooler Off};
+    \node[align=center,state] (1)[right of=0] {Heater On\\Cooler Off};
+    \node[align=center,state] (2)[left of=0]  {Heater Off\\Cooler On};
+    \path
+    (0) edge[bend left, above] node{$T < 15 \degree C$} (1)
+    (1) edge[bend left, below] node{$T > 30 \degree C$} (0)
+    (0) edge[bend left, below] node{$T > 35 \degree C$} (2)
+    (2) edge[bend left, above] node{$T < 25 \degree C$} (0)
+    ;
+    \end{tikzpicture}
+\end{latin}
+هر کدام از حالاتی که گرم کن یا سرد کن روشن است یک زیر
+\lr{state}
+هستند. به عنوان مثال وقتی که سرد کن روشن است، حالات زیر را داریم:
+\begin{latin}
+    \centering
+    \begin{tikzpicture}[->, >=stealth', auto, semithick, node distance=3.5cm]
+    \tikzstyle{every state}=[fill=white,draw=black,thick,text=black,scale=1]
+    \node[align=center,initial,state,initial text=] (0)  {Out};
+    \node[align=center,state] (1)[right of=0] {RPS4};
+    \node[align=center,state] (2)[right of=1] {RPS6};
+    \node[align=center,state] (3)[right of=2] {RPS8};
+    \path
+    (0) edge[bend left, above] node{$T > 35 \degree C$} (1)
+    (1) edge[bend left, below] node{$T < 25 \degree C$} (0)
+    (1) edge[bend left, above] node{$T > 40 \degree C$} (2)
+    (2) edge[bend left, below] node{$T < 35 \degree C$} (1)
+    (2) edge[bend left, above] node{$T > 45 \degree C$} (3)
+    (3) edge[bend left, below] node{$T < 40 \degree C$} (2)
+    ;
+    \end{tikzpicture}
+\end{latin}
+همچنین برای گرم کن با سه درجه گرما داریم:
+\begin{latin}
+    \centering
+    \begin{tikzpicture}[->, >=stealth', auto, semithick, node distance=3.5cm]
+    \tikzstyle{every state}=[fill=white,draw=black,thick,text=black,scale=1]
+    \node[align=center,initial,state,initial text=] (0)  {Out};
+    \node[align=center,state] (1)[right of=0] {Heater 1};
+    \node[align=center,state] (2)[right of=1] {Heater 2};
+    \node[align=center,state] (3)[right of=2] {Heater 3};
+    \path
+    (0) edge[bend left, above] node{$T < 15 \degree C$} (1)
+    (1) edge[bend left, below] node{$T > 30 \degree C$} (0)
+    (1) edge[bend left, above] node{$T < 10 \degree C$} (2)
+    (2) edge[bend left, below] node{$T > 20 \degree C$} (1)
+    (2) edge[bend left, above] node{$T < 0 \degree C$} (3)
+    (3) edge[bend left, below] node{$T > 10 \degree C$} (2)
+    ;
+    \end{tikzpicture}
+\end{latin}
+
+حال به توضیح کد پایتون پیوست شده و شبیه ساز می‌پردازیم. در ابتدا تابعی تعریف می‌کنیم که عملا حکم
+گرفتن دیتا از محیط را دارد. بدین صورت که بعد از ۱ ثانیه و با توجه به دمای قبلی محیط، دمای جدیدی را
+تولید می‌کند. این دما را بین
+10- تا 50 درجه نگه می‌داریم
+که خیلی از
+\lr{FSM}
+دور نشویم.
+
+سپس حالات و دمای اولیه را تعیین می‌کنیم. به عنوان مثال من دمای اولیه را ۳۰ درجه در نظر گرفتم. در ادامه در یک
+حلقه‌ی بی‌نهایت می‌افتیم و منتظر می‌مانیم که کاربر
+\lr{CTRL + C}
+را فشار دهد که از برنامه خارج شود. در اینجا با توجه به حالت قبلی و دمای فعلی، حالت بعدی را
+تشخیص می‌دهیم. برای اینکه برنامه‌ی ما شبیه کد وریلاگ باشد، از
+\lr{next} و \lr{previous state}
+استفاده می‌کنیم و در آخر حلقه آن‌ها را مقدار دهی می‌کنیم.
+
+همچنان وقتی وارد یکی از حالات
+\lr{heater on} یا \lr{cooler on}
+می‌شویم اینقدر صبر می‌کنیم تا در حالت
+\lr{out}
+هر کدام از
+\lr{sub state}های
+آنها برویم.
+
+\end{document}
