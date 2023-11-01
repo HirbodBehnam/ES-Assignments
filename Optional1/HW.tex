@@ -147,4 +147,31 @@ endmodule
 را در هر کلاک بر عهده دارد.
 
 \section*{اجرای برنامه}
+برای اجرای برنامه کافی است که فایل
+\verb|FSM-To-Verilog.exe|
+را همراه با اسم فایل ورودی
+\lr{json}
+که تعریف
+\lr{FSM}
+است را اجرا کنیم. فایل خروجی
+\verb|output.v|
+در کنار برنامه ساخته می‌شود که خروجی ما است.
+در شکل زیر یک نمونه اجرای برنامه را مشاهده می‌کنید.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.4]{pics/run.jpg}
+\end{figure}
+در فایل آپلودی فایل برنامه‌ی کامپایل شده در فولدر
+\lr{bin}
+قرار دارد.
+
+\section*{کامپایل برنامه}
+برای کامپایل برنامه شما نیاز به
+\lr{.NET 7}
+خواهید داشت. بعد از نصب آن کافی است که خط زیر را در دایرکتوری پروژه اجرا کنید:
+\begin{latin}
+\begin{lstlisting}[language=verilog]
+dotnet build
+\end{lstlisting}
+\end{latin}
 \end{document}
